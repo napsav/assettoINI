@@ -1518,7 +1518,7 @@ function main() {
   document.getElementById('aggiungiMacchine').onclick = function () {
     if (numeroMacchine <= 21) {
       numeroMacchine++;
-      var numeroMacchineForm = document.getElementById("numeroMacchine")
+      var numeroMacchineForm = document.getElementById("numeroMacchineForm")
       
       var div = document.createElement("div");
       div.style = "display: block";
@@ -1547,7 +1547,7 @@ function main() {
       label.id = "label" + numeroMacchine;
 
       var rimuovi = document.createElement("button");
-      rimuovi.innerHTML = "Rimuovi";
+      rimuovi.innerHTML = '<i class="fas fa-trash-alt"></i>';
       rimuovi.value = numeroMacchine;
       rimuovi.id = "rimuovi" + numeroMacchine;
       rimuovi.onclick = function () {
@@ -1635,10 +1635,7 @@ function main() {
       document.getElementById("gestioneMacchine").appendChild(div);
       numeroMacchineForm.value=numeroMacchine;
     } else {
-      alert("Non puoi aggiungere piÃ¹ di 22 macchine")
+      alert("Non puoi aggiungere più di 22 macchine")
     }
   }
 }
-
-
-

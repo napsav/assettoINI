@@ -1,9 +1,13 @@
 const express = require('express')
 const app = express()
-var fs = require("fs");
+const fs = require("fs");
 const port = 3000
 const { exec } = require("child_process");
 
+
+const serverStatusFile = '/usr/share/nginx/html/serverstarted'
+const serverCfg = '/assetto/cfg/server_cfg.ini'
+const entryList = '/assetto/cfg/entry_list.ini'
 
 function parseINIString(data){
     var regex = {
@@ -37,30 +41,26 @@ function parseINIString(data){
 
 app.use(express.static('public'))
 app.use(express.urlencoded({extended: true}))
-/*
-try {
-	var data = fs.readFileSync('/assetto', 'utf8');
-	var javascript_ini = parseINIString(data);
-	console.log(javascript_ini['Section1']);
-  
-} 
-catch(e) {
-	console.log(e);
-}
-*/
+
+
 app.get('/macchine', (req, res) => {
-    exec("whoami", (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
+    try {
+      if (fs.existsSync(serverStatusFile)) {
+        res.send("Il server è ancora in esecuzione! Torna indietro e fermalo.")
+      } else {
+        try {
+            var data = fs.readFileSync(entryList, 'utf8');
+            var entryListObject = parseINIString(data);
+            res.render("index.pug", {object: entryListObject})
+        } 
+        catch(e) {
+            console.log(e);
         }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
-    });
-  res.render("index.pug")
+        
+      }
+    } catch(err) {
+      console.error(err)
+    }
 })
 
 app.post('/macchine/aggiungi', (req, res) => {
@@ -68,6 +68,21 @@ app.post('/macchine/aggiungi', (req, res) => {
     console.log(req.body["macchina"+2])
     res.end()
 })
+
+app.use(function(req, res, next){
+    res.status(404);
+    res.format({
+      html: function () {
+        res.send("Non trovato")
+      },
+      json: function () {
+        res.json({ error: 'Non trovato' })
+      },
+      default: function () {
+        res.type('txt').send('Non trovato')
+      }
+    })
+  });
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)

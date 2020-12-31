@@ -1,0 +1,23 @@
+/*
+try {
+	var data = fs.readFileSync('/assetto', 'utf8');
+	var javascript_ini = parseINIString(data);
+	console.log(javascript_ini['Section1']);
+  
+} 
+catch(e) {
+	console.log(e);
+}
+
+    exec("whoami", (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+    });
+*/

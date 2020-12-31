@@ -4,7 +4,9 @@ head
   meta(charset='UTF-8')
   title ResetFocus - Aggiungi macchine
   link(rel='stylesheet', type='text/css', href='rfstyle.css')
-  link(href='https://fonts.googleapis.com/css2?family=Roboto&display=swap', rel='stylesheet')
+  link(rel='preconnect', href='https://fonts.gstatic.com')
+  link(href='https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap', rel='stylesheet')
+  link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.15.1/css/all.css', integrity='sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp', crossorigin='anonymous')
 .sidenav
   img.logo(src='assets/logo_transparent.png')
   a(href='index.html') Home
@@ -15,9 +17,26 @@ head
   a(href='terraria.php') Terraria Web Manager
 #main.main
   h1 Aggiunta macchine - Assetto Corsa
-  button#aggiungiMacchine.aggiungi Aggiungi Macchina
-  form(method='POST', action='/macchine/aggiungi')
-    #gestioneMacchine
-      input(type='hidden', value='0', name='numeroMacchine')
-    input.aggiungi(type='submit', value='Salva')
+  #rigaPrincipale.row
+    #correnti.column
+      .card
+        .card-header
+          h2 Macchine attuali
+          a(class="aggiungi") Reset
+        each elem, index in object
+          h3= index
+          ul
+            each val, key in elem
+              li=key + "=" +val
+    #gestione.column
+      .card
+        .card-header
+          h2 Modifica macchine
+          button#aggiungiMacchine.aggiungi 
+            i.fas.fa-plus
+        form(method='POST', action='/macchine/aggiungi')
+          #gestioneMacchine
+            input(type='hidden', value='0', name='numeroMacchineForm', id='numeroMacchineForm')
+          input.aggiungi(type='submit', value='Salva')
+
 script(src='data.js')
