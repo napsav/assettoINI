@@ -2,16 +2,28 @@ html {
   font-kerning: normal;
 }
 h1 {
+  margin-left:10px;
   font-weight: initial;
   font-weight: normal;
 }
 h2 {
+  margin-left:10px;
   font-weight: initial;
   font-weight: normal;
 }
 h3 {
+  margin-left:10px;
   font-weight: initial;
   font-weight: normal;
+}
+p {
+    margin-left:10px;
+}
+pre {
+    margin-left:10px;
+}
+a{
+    margin-left:10px;
 }
 .sidenav {
   height: 100%;
@@ -51,7 +63,7 @@ h3 {
 }
 
 .main {
-  margin-left: 320px;
+  margin-left: 300px;
   /* Same as the width of the sidebar */
   padding: 0px 10px;
   font-family: 'Fira Sans', sans-serif;
@@ -117,7 +129,8 @@ select {
 }
 
 label {
-  margin: 2px 8px;
+  margin-right: 8px;
+  margin-left: 0px;
 }
 
 .aggiungi {
@@ -167,6 +180,7 @@ a.start:link, a.start:visited {
   border: 2px solid green;
   border-radius: 4px;
   padding: 5px 10px;
+  margin-left:10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -183,6 +197,7 @@ a.stop:link, a.stop:visited {
   border: 2px solid red;
   border-radius: 4px;
   padding: 5px 10px;
+  margin-left:10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
