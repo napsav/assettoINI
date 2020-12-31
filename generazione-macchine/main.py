@@ -13,15 +13,9 @@ for macchina in listepath:
     if (macchina + "/skins") in sub:
         listaskins_path = [f.path for f in os.scandir(macchina + "/skins/") if f.is_dir()]
         listaskins = [elem.replace(macchina + "/skins/","") for elem in listaskins_path]
-        x = {
-            nome:listaskins
-        }
-        final.append(x)
+        final[nome]=listaskins
     else:
-        x = {
-            nome: None
-        }
-        final.append(x)
+        final[nome]=None
 listamacchine.write("\n".join(["<option>" + elem.replace("/disco3/SteamLibrary/steamapps/common/assettocorsa/content/cars/","").strip("\n") + "</option>\n" for elem in listepath]))
 
 salvataggio.write(json.dumps(final, indent=2))

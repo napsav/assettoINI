@@ -1,0 +1,23 @@
+doctype html
+head
+  meta(name='viewport', content='width=device-width, initial-scale=1.0')
+  meta(charset='UTF-8')
+  title ResetFocus - Aggiungi macchine
+  link(rel='stylesheet', type='text/css', href='rfstyle.css')
+  link(href='https://fonts.googleapis.com/css2?family=Roboto&display=swap', rel='stylesheet')
+.sidenav
+  img.logo(src='assets/logo_transparent.png')
+  a(href='index.html') Home
+  a(href='download.html') Centro download
+  a(href='manager.php') AC Web Manager
+  a(href='info.html') Info e link utili
+  a(href='gara.html') Campionato GT3 AC
+  a(href='terraria.php') Terraria Web Manager
+#main.main
+  h1 Aggiunta macchine - Assetto Corsa
+  button#aggiungiMacchine.aggiungi Aggiungi Macchina
+  form(method='POST', action='/macchine/aggiungi')
+    #gestioneMacchine
+      input(type='hidden', value='0', name='numeroMacchine')
+    input.aggiungi(type='submit', value='Salva')
+script(src='data.js')
