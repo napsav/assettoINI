@@ -8,7 +8,7 @@ const { PassThrough } = require('stream');
 
 const serverStatusFile = '/usr/share/nginx/html/serverstarted'
 const serverCfg = '/assetto/cfg/server_cfg.ini'
-const entryList = 'test.ini'
+const entryList = '/assetto/cfg/entry_list.ini'
 const data = fs.readFileSync('cars.json', 'utf8');
 const dataObject = JSON.parse(data)
 function getSkins(macchina) {
