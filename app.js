@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const fs = require("fs");
-const port = 3000
+const port = 8080
 const { exec } = require("child_process");
 const { PassThrough } = require('stream');
 
@@ -158,5 +158,5 @@ app.use(function (req, res, next) {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`App avviata - http://localhost:${port}`)
 })
