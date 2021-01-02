@@ -11,7 +11,7 @@ head
   img.logo(src='/assets/logo_transparent.png')
   a(href='index.html') Home
   a(href='download.html') Centro download
-  a(href='manager.php') AC Web Manager
+  a(href='/manager') AC Web Manager
   a(href='info.html') Info e link utili
   a(href='gara.html') Campionato GT3 AC
   a(href='terraria.php') Terraria Web Manager
@@ -29,9 +29,10 @@ head
       .card
         .card-header
           h2 Modifica mappa
-        form(method='post' action='/manager/mappe')
+        form(method='post' action='/manager/mappe/cambia')
           select(name='mappaScelta')
             option(selected='selected' disabled='') Scegli qui la mappa
+            option feldberg
             option ks_nurburgring
             option ks_red_bull_ring
             option ks_silverstone

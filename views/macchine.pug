@@ -3,15 +3,15 @@ head
   meta(name='viewport', content='width=device-width, initial-scale=1.0')
   meta(charset='UTF-8')
   title ResetFocus - Aggiungi macchine
-  link(rel='stylesheet', type='text/css', href='rfstyle.css')
+  link(rel='stylesheet', type='text/css', href='/rfstyle.css')
   link(rel='preconnect', href='https://fonts.gstatic.com')
   link(href='https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap', rel='stylesheet')
   link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.15.1/css/all.css', integrity='sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp', crossorigin='anonymous')
 .sidenav
-  img.logo(src='assets/logo_transparent.png')
+  img.logo(src='/assets/logo_transparent.png')
   a(href='index.html') Home
   a(href='download.html') Centro download
-  a(href='manager.php') AC Web Manager
+  a(href='/manager') AC Web Manager
   a(href='info.html') Info e link utili
   a(href='gara.html') Campionato GT3 AC
   a(href='terraria.php') Terraria Web Manager
@@ -22,7 +22,9 @@ head
       .card
         .card-header
           h2 Macchine attuali
-          a(class="aggiungi" href="/macchine/reset") Reset
+          .links(style="padding-top:8px")
+            a(class="aggiungi" href="/manager/macchine/reset") Reset
+            a(class="aggiungi" href="/manager/exportentrylist") Esporta file
         each elem, index in object
           h3= index
           ul
@@ -34,9 +36,9 @@ head
           h2 Modifica macchine
           button#aggiungiMacchine.aggiungi 
             i.fas.fa-plus
-        form(method='POST', action='/macchine/aggiungi')
+        form(method='POST', action='/manager/macchine/aggiungi')
           #gestioneMacchine
             input(type='hidden', value='0', name='numeroMacchineForm', id='numeroMacchineForm')
           input.aggiungi(type='submit', value='Salva')
 
-script(src='data.js')
+script(src='/data.js')
