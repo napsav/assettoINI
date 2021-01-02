@@ -17,16 +17,13 @@ head
   // <a href="logout.php">Logout</a>
 #main.main
   h1 Assetto Corsa Server Web Manager
-  p#status(style='font-size: 20px; font-weight: bold; color: red; margin-left:10px')
-  p Risposta comandi:
-  pre.
-    $output
-  pre.
-    Il server é già stato avviato    
-  pre.
-    Server stoppato    
-  a.stop(href='/manager/stop') Ferma il server
-  a.start(href='/manager/start') Starta il server
+  
+  if status
+    p#status(style='font-size: 20px; font-weight: bold; color: red; margin-left:10px') Stato del server: In esecuzione
+    a.stop(href='/manager/stop') Ferma il server
+  else
+    p#status(style='font-size: 20px; font-weight: bold; color: grey; margin-left:10px') Stato del server: Fermato
+    a.start(href='/manager/start') Starta il server
   br
   br
   #rigaPrincipale.row
@@ -42,7 +39,7 @@ head
           h2 Cambia le mappe
           a(href='/manager/mappe')
             img(src='assets/map.png' style='width:50px;')
-    .column
+//-    .column
       .card
         .card-header
           h2 Tempo pratica
@@ -83,5 +80,5 @@ head
           label Tempo di attesa in secondi: 
           input#time(type='number' name='waitTimeGara' min='1' max='120')
           input.aggiungi(type='submit' value='Modifica')
-  p Risposta comandi per il cambio configurazione 
+
   br

@@ -131,7 +131,11 @@ app.get('/manager', (req, res) => {
         //var data = fs.readFileSync(entryList, 'utf8');
         //var entryListObject = parseINIString(data);
         //res.render("macchine.pug", { object: entryListObject })
-        res.render("manager.pug")
+        if (fs.existsSync(serverStatusFile)) {
+          res.render("manager.pug", {status: true})
+        } else {
+          res.render("manager.pug", {status: false})
+        }
       }
       catch (e) {
         console.log(e);
@@ -141,6 +145,37 @@ app.get('/manager', (req, res) => {
   } catch (err) {
     console.error(err)
   }
+})
+
+app.get('/manager/start', (req, res) => {
+  exec("./runserver.sh", (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+    res.redirect("/manager")
+});
+})
+
+app.get('/manager/stop', (req, res) => {
+  exec("./stopserver.sh", (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        
+    }
+    console.log(`stdout: ${stdout}`);
+    res.redirect("/manager")
+});
+
 })
 
 app.get('/manager/macchine', (req, res) => {
