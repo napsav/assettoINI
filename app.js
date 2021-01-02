@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const fs = require("fs");
-const port = 8080
+const port = 3000
 const { exec } = require("child_process");
 const { PassThrough } = require('stream');
 
@@ -108,7 +108,27 @@ function generaINI(macchine) {
   return data;
 }
 
-app.get('/macchine', (req, res) => {
+app.get('/manager', (req, res) => {
+  try {
+    //fs.existsSync(serverStatusFile)
+    //res.send("Il server è ancora in esecuzione! Torna indietro e fermalo.")
+      try {
+        //var data = fs.readFileSync(entryList, 'utf8');
+        //var entryListObject = parseINIString(data);
+        //res.render("macchine.pug", { object: entryListObject })
+        res.render("manager.pug")
+      }
+      catch (e) {
+        console.log(e);
+      }
+
+    
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+app.get('/manager/macchine', (req, res) => {
   try {
     if (fs.existsSync(serverStatusFile)) {
       res.send("Il server è ancora in esecuzione! Torna indietro e fermalo.")
@@ -116,37 +136,56 @@ app.get('/macchine', (req, res) => {
       try {
         var data = fs.readFileSync(entryList, 'utf8');
         var entryListObject = parseINIString(data);
-        res.render("index.pug", { object: entryListObject })
+        res.render("macchine.pug", { object: entryListObject })
       }
       catch (e) {
         console.log(e);
       }
-
     }
   } catch (err) {
     console.error(err)
   }
 })
 
-app.post('/macchine/aggiungi', (req, res) => {
+app.get('/manager/mappe', (req, res) => {
+  try {
+    if (fs.existsSync(serverStatusFile)) {
+      res.send("Il server è ancora in esecuzione! Torna indietro e fermalo.")
+    } else {
+      try {
+        var data = fs.readFileSync(serverCfg, 'utf8');
+        var serverCfgObject = parseINIString(data);
+        console.log(serverCfgObject)
+        res.render("mappe.pug", {mappa: serverCfgObject.SERVER.TRACK, configMappa: serverCfgObject.SERVER.CONFIG_TRACK})
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+app.post('/manager/macchine/aggiungi', (req, res) => {
   console.log(req.body)
   var macchine = generaOggDaForm(req.body)
   if (macchine != null) {
     fs.writeFileSync(entryList, generaINI(macchine))
   }
-  res.redirect('/macchine')
+  res.redirect('/manager/macchine')
 })
 
-app.get('/macchine/reset', (req, res) => {
+app.get('/manager/macchine/reset', (req, res) => {
   fs.writeFileSync(entryList, "")
-  res.redirect('/macchine')
+  res.redirect('/manager/macchine')
 })
 
 app.use(function (req, res, next) {
   res.status(404);
   res.format({
     html: function () {
-      res.send("Non trovato")
+      res.redirect("/404.html")
     },
     json: function () {
       res.json({ error: 'Non trovato' })

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>ResetFocus - Internal Page</title>
+    <link rel="stylesheet" type="text/css" href="rfstyle.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans&amp;display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="sidenav">
+        <img src="assets/logo_transparent.png" class="logo">
+        <a href="index.html">Home</a>
+        <a href="download.html">Centro download</a>
+        <a href="manager.php">AC Web Manager</a>
+        <a href="info.html">Info e link utili</a>
+        <a href="gara.html">Campionato GT3 AC</a>
+        <a href="terraria.php">Terraria Web Manager</a>
+        <!--<a href="logout.php">Logout</a>-->
+    </div>
+    <div class="main" id="main">
+        <h1>Assetto Corsa Server Web Manager</h1>
+        <p id="status" style="font-size: 20px; font-weight: bold; color: red; margin-left:10px"></p>
+        <p>Risposta comandi:</p>
+        <pre>$output</pre>
+        <pre>Il server é già stato avviato</pre>
+        <pre>Server stoppato</pre>
+        <a href="/manager/stop" class="stop">Ferma il server</a>
+        <a href="/manager/start" class="start">Starta il server</a>
+        <br>
+        <br>
+        <div id="rigaPrincipale" class="row">
+            <div class="column">
+                <div class="card" onclick="location.href='/manager/macchine';" style="cursor: pointer;">
+                    <div onclick="location.href='/manager/macchine';" class="card-header"
+                        style="margin-bottom:0px; cursor: pointer;">
+                        <h2>Cambia le macchine</h2>
+                        <a href="/manager/macchine"><img src="assets/car.png" style="width:50px;"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Mappa</h2>
+                    </div>
+                    <form method="post" action="manager.php">
+                        <select name="mappaScelta">
+                            <option selected="selected" disabled>Scegli qui la mappa</option>
+                            <option>ks_nurburgring</option>
+                            <option>ks_red_bull_ring</option>
+                            <option>ks_silverstone</option>
+                            <option>ks_silverstone1967</option>
+                            <option>ks_vallelunga</option>
+                            <option>ks_zandvoort</option>
+                            <option>magione</option>
+                            <option>monza</option>
+                            <option>mugello</option>
+                            <option>spa</option>
+                            <option>trento-bondone</option>
+                            <option>drift</option>
+                            <option>imola</option>
+                            <option>ks_barcelona</option>
+                            <option>ks_black_cat_county</option>
+                            <option>ks_brands_hatch</option>
+                            <option>ks_drag</option>
+                            <option>ks_highlands</option>
+                            <option>ks_laguna_seca</option>
+                            <option>ks_monza66</option>
+                            <option>ks_nordschleife</option>
+                            <option>monaco_2017</option>
+                        </select>
+                        <input class="aggiungi" type="submit" value="Modifica">
+                    </form>
+                </div>
+
+            </div>
+            <div class="column">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Tempo pratica</h2>
+                    </div>
+                    <form method="post" action="manager.php">
+                        <select name="tempoScelto">
+                            <option selected="selected" disabled>Scegli qui il tempo</option>
+                            <option value="1">1 minuto</option>
+                            <option value="5">5 minuti</option>
+                            <option value="10">10 minuti</option>
+                            <option value="20">20 minuti</option>
+                            <option value="30000">Fino alla fine dei tempi</option>
+                        </select>
+                        <input class="aggiungi" type="submit" value="Modifica">
+                    </form>
+                </div>
+            </div>
+            <div class="column">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Impostazioni gara</h2>
+                    </div>
+                    <form method="post" action="manager.php">
+                        <label for="giri">Numero di giri</label>
+                        <input type="number" id="giri" name="numeroGiri" min="1" max="35">
+                        <input class="aggiungi" type="submit" value="Modifica">
+                        <hr>
+                    </form>
+                    <form method="post" action="manager.php">
+                        <p style="margin-left:4px;">Blocco accesso degli utenti durante la gara</p>
+                        <input type="radio" id="0" name="blockAccessGara" value="0">
+                        <label for="0">0 - Gli utenti non possono entrare</label><br>
+                        <input type="radio" id="1" name="blockAccessGara" value="1">
+                        <label for="1">1 - Gli utenti possono entrare in qualsiasi momento</label><br>
+                        <input type="radio" id="2" name="blockAccessGara" value="2">
+                        <label for="2">2 - Gli utenti non possono entrare a 20 secondi dalla partenza</label><br>
+                        <input class="aggiungi" type="submit" value="Modifica">
+                    </form>
+                    <hr>
+                    <form method="post" action="manager.php">
+                        <label>Tempo di attesa in secondi: </label>
+                        <input type="number" id="time" name="waitTimeGara" min="1" max="120">
+                        <input class="aggiungi" type="submit" value="Modifica">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <p>Risposta comandi per il cambio configurazione </p>
+        <br>
+    </div>
+</body>
