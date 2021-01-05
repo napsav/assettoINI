@@ -17,29 +17,6 @@ head
   a(href='terraria.php') Terraria Web Manager
   a(href="/manager/logout") Logout
 #main.main
-  h1 Aggiunta macchine - Assetto Corsa
-  #rigaPrincipale.row
-    #correnti.column
-      .card
-        .card-header
-          h2 Macchine attuali
-          .links(style="padding-top:8px")
-            a(class="aggiungi" href="/manager/macchine/reset") Reset
-            a(class="aggiungi" href="/manager/exportentrylist") Esporta file
-        each elem, index in object
-          h3= index
-          ul
-            each val, key in elem
-              li=key + "=" +val
-    #gestione.column
-      .card
-        .card-header
-          h2 Modifica macchine
-          button#aggiungiMacchine.aggiungi 
-            i.fas.fa-plus
-        form(method='POST', action='/manager/macchine/aggiungi')
-          #gestioneMacchine
-            input(type='hidden', value='0', name='numeroMacchineForm', id='numeroMacchineForm')
-          input.aggiungi(type='submit', value='Salva')
-
-script(src='/data.js')
+    h1  Errore
+    include ../partials/messages.pug
+    a.aggiungi(href="/manager/logout") Logout
