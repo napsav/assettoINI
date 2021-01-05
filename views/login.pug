@@ -20,8 +20,8 @@ head
     include ../partials/messages.pug
     form(action='/manager/login' method='POST')
       div
-        label(for='name') Email
-        input(type='username' name='name' placeholder='Nome Utente')
+        label(for='name') Nome Utente
+        input(type='text' name='name' placeholder='Nome Utente')
       div
         label(for='password') Password
         input(type='password' name='password' placeholder='Password')
