@@ -15,7 +15,9 @@ head
   a(href='/info.html') Info e link utili
   a(href='/gara.html') Campionato GT3 AC
 #main.main
-    h1  Login
+  .card
+    .card-header
+      h2  Login
     include ../partials/messages.pug
     form(action='/manager/login' method='POST')
       div
