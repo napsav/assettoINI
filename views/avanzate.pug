@@ -32,5 +32,7 @@ head
       each elem, index in object
         h2= index
         each val, key in elem
-          p=key + " "
-            input(type="text" name=`[${index}][${key}]` value=val)
+          label(for=name=`[${index}][${key}]`)=key
+          input(type="text" id=name=`[${index}][${key}]` name=`[${index}][${key}]` value=val)
+          | 
+          br
