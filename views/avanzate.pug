@@ -1,0 +1,36 @@
+doctype html
+head
+  meta(name='viewport', content='width=device-width, initial-scale=1.0')
+  meta(charset='UTF-8')
+  title ResetFocus - Aggiungi macchine
+  link(rel='stylesheet', type='text/css', href='/rfstyle.css')
+  link(rel='preconnect', href='https://fonts.gstatic.com')
+  link(href='https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap', rel='stylesheet')
+  link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.15.1/css/all.css', integrity='sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp', crossorigin='anonymous')
+  style.
+    .container {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+    -webkit-column-gap: 20px;
+    -moz-column-gap: 20px;
+    column-gap: 20px;
+    }
+.sidenav
+  img.logo(src='/assets/logo_transparent.png')
+  a(href='/index.html') Home
+  a(href='/download.html') Centro download
+  a(href='/manager') AC Web Manager
+  a(href='/info.html') Info e link utili
+  a(href='/gara.html') Campionato GT3 AC
+  a(href="/manager/logout") Logout
+#main.main
+  h1 Impostazioni avanzate  
+  .container
+    form(method="POST" action="/manager/avanzate")
+      input(type="submit" value="Salva" class="aggiungi")
+      each elem, index in object
+        h2= index
+        each val, key in elem
+          p=key + " "
+            input(type="text" name=`[${index}][${key}]` value=val)

@@ -8,16 +8,17 @@ const { PassThrough } = require('stream');
 const User = require("./models/user.js")
 const bcrypt = require('bcrypt');
 const serverStatusFile = '/usr/share/nginx/html/serverstarted'
-const serverCfg = '/assetto/cfg/server_cfg.ini'
+const serverCfg = '/home/saverio/progetti/assettoINI/server_cfg.ini'
 const entryList = '/assetto/cfg/entry_list.ini'
 const data = fs.readFileSync('cars.json', 'utf8');
 const dataObject = JSON.parse(data)
 const passport = require('passport');
 require("./config/passport")(passport)
-const {ensureAuthenticated} = require("./config/auth.js")
-const {isAdmin} = require("./config/admin.js")
+const { ensureAuthenticated } = require("./config/auth.js")
+const { isAdmin } = require("./config/admin.js")
 const session = require('express-session');
 const flash = require('connect-flash');
+const content = require('./content.js')
 
 function getSkins(macchina) {
   skins = dataObject[macchina]
@@ -135,18 +136,18 @@ function onlyUnique(value, index, self) {
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(session({
-  secret:process.env.SECRET,
+  secret: process.env.SECRET,
   resave: true,
   saveUninitialized: true
 }))
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use((req,res,next)=> {
+app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
-  res.locals.error  = req.flash('error');
-next();
+  res.locals.error = req.flash('error');
+  next();
 })
 
 app.disable('x-powered-by');
@@ -161,11 +162,11 @@ app.get('/manager/login', (req, res) => {
 })
 
 app.post('/manager/login', (req, res, next) => {
-  passport.authenticate('local',{
-    successRedirect : '/manager',
-    failureRedirect : '/manager/login',
-    failureFlash : true,
-  })(req,res,next);
+  passport.authenticate('local', {
+    successRedirect: '/manager',
+    failureRedirect: '/manager/login',
+    failureFlash: true,
+  })(req, res, next);
 })
 
 app.post('/manager/registrazione', (req, res) => {
@@ -213,7 +214,7 @@ app.post('/manager/registrazione', (req, res) => {
               newUser.save()
                 .then((value) => {
                   console.log(value)
-                  req.flash('success_msg','Registrato con successo!')
+                  req.flash('success_msg', 'Registrato con successo!')
                   res.redirect('/manager/login');
                 })
                 .catch(value => console.log(value));
@@ -225,15 +226,15 @@ app.post('/manager/registrazione', (req, res) => {
 
 app.get('/manager/logout', (req, res) => {
   req.logout();
-  req.flash('success_msg','Il logout è stato effettuato correttamente');
-res.redirect('/manager/login');
+  req.flash('success_msg', 'Il logout è stato effettuato correttamente');
+  res.redirect('/manager/login');
 })
 
 app.get('/manager/errore', ensureAuthenticated, (req, res) => {
   res.render('asklogout.pug')
 })
 
-app.get('/manager',ensureAuthenticated,isAdmin, (req, res) => {
+app.get('/manager', ensureAuthenticated, isAdmin, (req, res) => {
   try {
     if (fs.existsSync(serverStatusFile)) {
       res.render("manager.pug", { status: true })
@@ -245,7 +246,7 @@ app.get('/manager',ensureAuthenticated,isAdmin, (req, res) => {
   }
 })
 
-app.get('/manager/start',ensureAuthenticated,isAdmin, (req, res) => {
+app.get('/manager/start', ensureAuthenticated, isAdmin, (req, res) => {
   exec("./runserver.sh", (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
@@ -260,7 +261,7 @@ app.get('/manager/start',ensureAuthenticated,isAdmin, (req, res) => {
   });
 })
 
-app.get('/manager/stop',ensureAuthenticated,isAdmin, (req, res) => {
+app.get('/manager/stop', ensureAuthenticated, isAdmin, (req, res) => {
   exec("./stopserver.sh", (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
@@ -276,10 +277,10 @@ app.get('/manager/stop',ensureAuthenticated,isAdmin, (req, res) => {
 
 })
 
-app.get('/manager/macchine',ensureAuthenticated,isAdmin, (req, res) => {
+app.get('/manager/macchine', ensureAuthenticated, isAdmin, (req, res) => {
   try {
     if (fs.existsSync(serverStatusFile)) {
-      res.send("Il server è ancora in esecuzione! Torna indietro e fermalo.")
+      res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
     } else {
       try {
         var data = fs.readFileSync(entryList, 'utf8');
@@ -296,10 +297,41 @@ app.get('/manager/macchine',ensureAuthenticated,isAdmin, (req, res) => {
   }
 })
 
-app.get('/manager/mappe',ensureAuthenticated,isAdmin, (req, res) => {
+app.get('/manager/avanzate', ensureAuthenticated, isAdmin, (req, res) => {
   try {
     if (fs.existsSync(serverStatusFile)) {
-      res.send("Il server è ancora in esecuzione! Torna indietro e fermalo.")
+      res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+    } else {
+      try {
+        var data = fs.readFileSync(serverCfg, 'utf8');
+        var serverCfgObject = parseINIString(data);
+        console.log(serverCfgObject)
+        res.render("avanzate.pug", { object: serverCfgObject })
+      }
+      catch (e) {
+        console.log(e);
+      }
+    }
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+app.post('/manager/avanzate', ensureAuthenticated, isAdmin, (req, res) => {
+  if (fs.existsSync(serverStatusFile)) {
+    res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+  } else {
+    console.log(req.body)
+    let nuovoConfig = req.body
+    fs.writeFileSync(serverCfg, saveINI(nuovoConfig))
+    res.redirect('/manager')
+  }
+})
+
+app.get('/manager/mappe', ensureAuthenticated, isAdmin, (req, res) => {
+  try {
+    if (fs.existsSync(serverStatusFile)) {
+      res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
     } else {
       try {
         var data = fs.readFileSync(serverCfg, 'utf8');
@@ -316,38 +348,50 @@ app.get('/manager/mappe',ensureAuthenticated,isAdmin, (req, res) => {
   }
 })
 
-app.get('/manager/export',ensureAuthenticated,isAdmin, (req, res) => { res.download(serverCfg) })
-app.get('/manager/exportentrylist',ensureAuthenticated,isAdmin, (req, res) => { res.download(entryList) })
+app.get('/manager/export', ensureAuthenticated, isAdmin, (req, res) => { res.download(serverCfg) })
+app.get('/manager/exportentrylist', ensureAuthenticated, isAdmin, (req, res) => { res.download(entryList) })
 
-app.post('/manager/macchine/aggiungi',ensureAuthenticated,isAdmin, (req, res) => {
-  console.log(req.body)
-  var macchine = generaOggDaForm(req.body)
-  var serverdata = fs.readFileSync(serverCfg, 'utf8');
-  var serverCfgObject = parseINIString(serverdata);
-  if (macchine != null) {
-    fs.writeFileSync(entryList, generaINI(macchine))
-    var macchinecfg = [];
-    macchine.forEach((elem) => { macchinecfg.push(elem.nome) })
-    console.log(macchinecfg)
-    serverCfgObject.SERVER.CARS = macchinecfg.filter(onlyUnique).join(";")
+app.post('/manager/macchine/aggiungi', ensureAuthenticated, isAdmin, (req, res) => {
+  if (fs.existsSync(serverStatusFile)) {
+    res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+  } else {
+    console.log(req.body)
+    var macchine = generaOggDaForm(req.body)
+    var serverdata = fs.readFileSync(serverCfg, 'utf8');
+    var serverCfgObject = parseINIString(serverdata);
+    if (macchine != null) {
+      fs.writeFileSync(entryList, generaINI(macchine))
+      var macchinecfg = [];
+      macchine.forEach((elem) => { macchinecfg.push(elem.nome) })
+      console.log(macchinecfg)
+      serverCfgObject.SERVER.CARS = macchinecfg.filter(onlyUnique).join(";")
+      console.log(serverCfgObject)
+      fs.writeFileSync(serverCfg, saveINI(serverCfgObject))
+    }
+    res.redirect('/manager/macchine')
+  }
+})
+
+app.post('/manager/mappe/cambia', ensureAuthenticated, isAdmin, (req, res) => {
+  if (fs.existsSync(serverStatusFile)) {
+    res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+  } else {
+    var serverdata = fs.readFileSync(serverCfg, 'utf8');
+    var serverCfgObject = parseINIString(serverdata);
+    serverCfgObject.SERVER.TRACK = req.body.mappaScelta
     console.log(serverCfgObject)
     fs.writeFileSync(serverCfg, saveINI(serverCfgObject))
+    res.redirect('/manager/mappe')
   }
-  res.redirect('/manager/macchine')
 })
 
-app.post('/manager/mappe/cambia',ensureAuthenticated,isAdmin, (req, res) => {
-  var serverdata = fs.readFileSync(serverCfg, 'utf8');
-  var serverCfgObject = parseINIString(serverdata);
-  serverCfgObject.SERVER.TRACK = req.body.mappaScelta
-  console.log(serverCfgObject)
-  fs.writeFileSync(serverCfg, saveINI(serverCfgObject))
-  res.redirect('/manager/mappe')
-})
-
-app.get('/manager/macchine/reset',ensureAuthenticated,isAdmin, (req, res) => {
-  fs.writeFileSync(entryList, "")
-  res.redirect('/manager/macchine')
+app.get('/manager/macchine/reset', ensureAuthenticated, isAdmin, (req, res) => {
+  if (fs.existsSync(serverStatusFile)) {
+    res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+  } else {
+    fs.writeFileSync(entryList, "")
+    res.redirect('/manager/macchine')
+  }
 })
 
 app.use(function (req, res, next) {
