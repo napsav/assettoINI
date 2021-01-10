@@ -1,0 +1,48 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  title Pagina non trovata
+  link(rel='preconnect' href='https://fonts.gstatic.com')
+  link(href='https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap' rel='stylesheet')
+  style(media='screen').
+    body { background: #1e1e1e; color: white; font-family: Fira Sans, Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+    .divCenter {
+    background-image: url('assets/mark.png');
+    background-position: -10% center;
+    background-size: 32%;
+    background-repeat: no-repeat;
+    outline: none;
+    color: white;
+    padding: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    }
+    .divCenter > h2 {
+    margin-left:80px;
+    margin-top:0px;
+    margin-bottom:8px;
+    font-size:30px;
+    color:#bdbdbd
+    }
+    .divCenter > h1 {
+    margin-top:2px;
+    margin-left:80px;
+    }
+    .divCenter > p {
+    margin-left:80px;
+    }
+    .divCenter > a {
+    margin-left:80px;
+    color:#bdbdbd;
+    float: right ;
+    }
+.divCenter
+  h2 500
+  h1 Errore
+  p= error
+  a(href='/manager') Torna alla home

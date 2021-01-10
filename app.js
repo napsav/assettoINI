@@ -280,7 +280,7 @@ app.get('/manager/stop', ensureAuthenticated, isAdmin, (req, res) => {
 app.get('/manager/macchine', ensureAuthenticated, isAdmin, (req, res) => {
   try {
     if (fs.existsSync(serverStatusFile)) {
-      res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+      res.render("errore.pug", {errore: "Il server è ancora in esecuzione! Torna indietro e fermalo."})
     } else {
       try {
         var data = fs.readFileSync(entryList, 'utf8');
@@ -300,7 +300,7 @@ app.get('/manager/macchine', ensureAuthenticated, isAdmin, (req, res) => {
 app.get('/manager/avanzate', ensureAuthenticated, isAdmin, (req, res) => {
   try {
     if (fs.existsSync(serverStatusFile)) {
-      res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+      res.render("errore.pug", {errore: "Il server è ancora in esecuzione! Torna indietro e fermalo."})
     } else {
       try {
         var data = fs.readFileSync(serverCfg, 'utf8');
@@ -319,7 +319,7 @@ app.get('/manager/avanzate', ensureAuthenticated, isAdmin, (req, res) => {
 
 app.post('/manager/avanzate', ensureAuthenticated, isAdmin, (req, res) => {
   if (fs.existsSync(serverStatusFile)) {
-    res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+    res.render("errore.pug", {errore: "Il server è ancora in esecuzione! Torna indietro e fermalo."})
   } else {
     console.log(req.body)
     let nuovoConfig = req.body
@@ -331,7 +331,7 @@ app.post('/manager/avanzate', ensureAuthenticated, isAdmin, (req, res) => {
 app.get('/manager/mappe', ensureAuthenticated, isAdmin, (req, res) => {
   try {
     if (fs.existsSync(serverStatusFile)) {
-      res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+      res.render("errore.pug", {errore: "Il server è ancora in esecuzione! Torna indietro e fermalo."})
     } else {
       try {
         var data = fs.readFileSync(serverCfg, 'utf8');
@@ -353,7 +353,7 @@ app.get('/manager/exportentrylist', ensureAuthenticated, isAdmin, (req, res) => 
 
 app.post('/manager/macchine/aggiungi', ensureAuthenticated, isAdmin, (req, res) => {
   if (fs.existsSync(serverStatusFile)) {
-    res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+    res.render("errore.pug", {errore: "Il server è ancora in esecuzione! Torna indietro e fermalo."})
   } else {
     console.log(req.body)
     var macchine = generaOggDaForm(req.body)
@@ -374,7 +374,7 @@ app.post('/manager/macchine/aggiungi', ensureAuthenticated, isAdmin, (req, res) 
 
 app.post('/manager/mappe/cambia', ensureAuthenticated, isAdmin, (req, res) => {
   if (fs.existsSync(serverStatusFile)) {
-    res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+    res.render("errore.pug", {errore: "Il server è ancora in esecuzione! Torna indietro e fermalo."})
   } else {
     var serverdata = fs.readFileSync(serverCfg, 'utf8');
     var serverCfgObject = parseINIString(serverdata);
@@ -387,7 +387,7 @@ app.post('/manager/mappe/cambia', ensureAuthenticated, isAdmin, (req, res) => {
 
 app.get('/manager/macchine/reset', ensureAuthenticated, isAdmin, (req, res) => {
   if (fs.existsSync(serverStatusFile)) {
-    res.send("<h1>Il server è ancora in esecuzione! Torna indietro e fermalo.</h1>")
+    res.render("errore.pug", {errore: "Il server è ancora in esecuzione! Torna indietro e fermalo."})
   } else {
     fs.writeFileSync(entryList, "")
     res.redirect('/manager/macchine')
