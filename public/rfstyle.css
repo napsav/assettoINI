@@ -100,7 +100,7 @@ button, select {
 
 .card > h2 {
   padding: 0 0;
-  margin-left: 0;
+  margin-left: 4px;
   margin-bottom:10px;
   margin-top:0;
   font-size: 26px;
@@ -179,6 +179,12 @@ button:hover {
   .card {
     padding: 4px 8px;
     margin: 4px 4px;
+  }
+  .card-header > h2 {
+      font-size:18px;
+  }
+  .card > * {
+      font-size:14px;
   }
 }
 
