@@ -1,5 +1,5 @@
 #!/bin/bash
 #Script per chiudere il server
-rm -f /usr/share/nginx/html/serverstarted
+rm -f /assetto/serverstarted
 killall acServer
 

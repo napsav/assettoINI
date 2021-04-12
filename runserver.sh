@@ -5,5 +5,5 @@
 #tmux -S shareds send-keys -t acserver 'cd /home/steam/assetto/; ./acServer' C-m
 cd /assetto/
 screen -d -m -S acserver ./acServer
-touch /usr/share/nginx/html/serverstarted
+touch /assetto/serverstarted
 echo "Server started"
