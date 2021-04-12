@@ -7,19 +7,19 @@ const getDirectories = source =>
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name)
 
-function macchineDisponibili() {
-    let final = {}
-    let listamain = getDirectories(baseDir+"cars/")
-    listamain.forEach(elem => {
-        let path = baseDir+"cars/"+elem+"/skins/";
-        if(existsSync(path)) {
-            final[elem] = getDirectories(path)
-        }
-    })
-    return final;
+function macchineDisponibili () {
+  const final = {}
+  const listamain = getDirectories(baseDir + 'cars/')
+  listamain.forEach(elem => {
+    const path = baseDir + 'cars/' + elem + '/skins/'
+    if (existsSync(path)) {
+      final[elem] = getDirectories(path)
+    }
+  })
+  return final
 }
 
-function mappeDisponibili() {
+function mappeDisponibili () {
 /*     let final = {}
     let listamain = getDirectories(baseDir+"tracks/")
     listamain.forEach(elem => {
@@ -32,6 +32,6 @@ function mappeDisponibili() {
 }
 
 module.exports = {
-    macchineDisponibili: macchineDisponibili,
-    mappeDisponibili: mappeDisponibili,
+  macchineDisponibili: macchineDisponibili,
+  mappeDisponibili: mappeDisponibili
 }

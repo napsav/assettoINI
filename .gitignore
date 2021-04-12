@@ -4,3 +4,4 @@ test.ini
 .env
 serverstarted
 assetto/
+.eslintrc.js
