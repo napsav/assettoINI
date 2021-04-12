@@ -9,9 +9,9 @@ const getDirectories = source =>
 
 function macchineDisponibili () {
   const final = {}
-  const listamain = getDirectories(baseDir + 'cars/')
+  const listamain = getDirectories(baseDir + 'content/cars/')
   listamain.forEach(elem => {
-    const path = baseDir + 'cars/' + elem + '/skins/'
+    const path = baseDir + 'content/cars/' + elem + '/skins/'
     if (existsSync(path)) {
       final[elem] = getDirectories(path)
     }
