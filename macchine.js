@@ -17,6 +17,25 @@ function onlyUnique (value, index, self) {
   return self.indexOf(value) === index
 }
 
+router.get('/', ensureAuthenticated, isAdmin, (req, res) => {
+  try {
+    if (fs.existsSync(serverStatusFile)) {
+      res.render('errore.pug', { errore: 'Il server è ancora in esecuzione! Torna indietro e fermalo.' })
+    } else {
+      try {
+        const data = fs.readFileSync(entryList, 'utf8')
+        const entryListObject = parseINIString(data)
+
+        res.render('macchine.pug', { object: entryListObject })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 router.post('/aggiungi', ensureAuthenticated, isAdmin, (req, res) => {
   if (fs.existsSync(serverStatusFile)) {
     res.render('errore.pug', { errore: 'Il server è ancora in esecuzione! Torna indietro e fermalo.' })

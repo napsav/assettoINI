@@ -18,8 +18,9 @@ const { isAdmin } = require('./config/admin.js')
 const session = require('express-session')
 const flash = require('connect-flash')
 const macchine = require('./macchine.js')
+const mappe = require('./mappe.js')
 const auth = require('./auth.js')
-const { parseINIString, generaINI, generaOggDaForm, saveINI } = require('./ini.js')
+const { parseINIString, saveINI } = require('./ini.js')
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
@@ -39,6 +40,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/manager/macchine', macchine)
+app.use('/manager/mappe', mappe)
 app.use(auth)
 
 app.disable('x-powered-by')
@@ -113,57 +115,8 @@ app.post('/manager/avanzate', ensureAuthenticated, isAdmin, (req, res) => {
   }
 })
 
-app.get('/manager/mappe', ensureAuthenticated, isAdmin, (req, res) => {
-  try {
-    if (fs.existsSync(serverStatusFile)) {
-      res.render('errore.pug', { errore: 'Il server è ancora in esecuzione! Torna indietro e fermalo.' })
-    } else {
-      try {
-        const data = fs.readFileSync(serverCfg, 'utf8')
-        const serverCfgObject = parseINIString(data)
-        res.render('mappe.pug', { mappa: serverCfgObject.SERVER.TRACK, configMappa: serverCfgObject.SERVER.CONFIG_TRACK })
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  } catch (err) {
-    console.error(err)
-  }
-})
-
-app.get('/manager/macchine', ensureAuthenticated, isAdmin, (req, res) => {
-  try {
-    if (fs.existsSync(serverStatusFile)) {
-      res.render('errore.pug', { errore: 'Il server è ancora in esecuzione! Torna indietro e fermalo.' })
-    } else {
-      try {
-        const data = fs.readFileSync(entryList, 'utf8')
-        const entryListObject = parseINIString(data)
-
-        res.render('macchine.pug', { object: entryListObject })
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  } catch (err) {
-    console.error(err)
-  }
-})
-
 app.get('/manager/export', ensureAuthenticated, isAdmin, (req, res) => { res.download(serverCfg) })
 app.get('/manager/exportentrylist', ensureAuthenticated, isAdmin, (req, res) => { res.download(entryList) })
-
-app.post('/manager/mappe/cambia', ensureAuthenticated, isAdmin, (req, res) => {
-  if (fs.existsSync(serverStatusFile)) {
-    res.render('errore.pug', { errore: 'Il server è ancora in esecuzione! Torna indietro e fermalo.' })
-  } else {
-    const serverdata = fs.readFileSync(serverCfg, 'utf8')
-    const serverCfgObject = parseINIString(serverdata)
-    serverCfgObject.SERVER.TRACK = req.body.mappaScelta
-    fs.writeFileSync(serverCfg, saveINI(serverCfgObject))
-    res.redirect('/manager/mappe')
-  }
-})
 
 app.use(function (req, res, next) {
   res.status(404)

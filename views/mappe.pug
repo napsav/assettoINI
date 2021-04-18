@@ -30,29 +30,8 @@ head
         .card-header
           h2 Modifica mappa
         form(method='post' action='/manager/mappe/cambia')
-          select(name='mappaScelta')
+          select(id='mappaScelta' name='mappaScelta')
             option(selected='selected' disabled='') Scegli qui la mappa
-            option feldberg
-            option ks_nurburgring
-            option ks_red_bull_ring
-            option ks_silverstone
-            option ks_silverstone1967
-            option ks_vallelunga
-            option ks_zandvoort
-            option magione
-            option monza
-            option mugello
-            option spa
-            option trento-bondone
-            option drift
-            option imola
-            option ks_barcelona
-            option ks_black_cat_county
-            option ks_brands_hatch
-            option ks_drag
-            option ks_highlands
-            option ks_laguna_seca
-            option ks_monza66
-            option ks_nordschleife
-            option monaco_2017
+            option(id='loading' disabled) Caricamento mappe...
           input.aggiungi(type='submit' value='Modifica')
+script(src='/mappeData.js')
