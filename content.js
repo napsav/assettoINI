@@ -18,7 +18,7 @@ function macchineDisponibili () {
   listamain.forEach(elem => {
     const pathDaControllare = baseDir + 'content/cars/' + elem + '/skins/'
     if (existsSync(pathDaControllare)) {
-      final[elem] = getDirectories(path)
+      final[elem] = getDirectories(pathDaControllare)
     }
   })
   return final
