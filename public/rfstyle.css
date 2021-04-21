@@ -1,31 +1,150 @@
-html {
+
+* {
   font-kerning: normal;
+  outline: none;
+  scrollbar-width: thin;
 }
+
+::-webkit-scrollbar {
+  height: 12px;
+  width: 8px;
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #414141;
+  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+::-webkit-scrollbar-corner {
+  background: #000;
+}
+
+.select {
+  width: min-content;
+  display: inline-block;
+}
+
+.select-label{
+  padding: 8px 16px;
+  margin: 4px 4px;
+  appearance: none;
+  background-color: black;
+  border-radius: 4px;
+  width: min-content;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.3s;
+  color:white;
+  white-space: nowrap;
+}
+
+.select-label:hover {
+background-color: #444444;
+}
+
+.disappear {
+  opacity: 0;
+}
+
+.opzioni{
+  position: absolute;
+  border: 2px solid #363636;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+  padding: 4px 4px;
+  width: min-content;
+  box-sizing: border-box;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+  z-index: 1;
+  transition: all 0.3s;
+}
+
+.lista-opzioni {
+  max-height: 300px;
+  overflow-x:hidden;
+  overflow-y: auto;
+  transition: all 0.3s;
+}
+
+.opzione-disabilitata {
+  background-color: #1e1e1e;
+  padding: 4px 8px;
+  color: white;
+  cursor: not-allowed;
+}
+
+.opzione {
+  padding: 8px 16px;
+  background-color: black;
+  border-radius: 4px;
+  color: white;
+  padding: 8px 16px;
+  margin-top: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s;
+}
+
+.opzione:hover {
+  background-color: #444444;
+}
+
+.search{
+  width: -moz-available;
+  width: -webkit-fill-available;
+  appearance: none;
+  border: 2px solid #363636;
+  border-radius: 4px;
+  background-color: #1e1e1e;
+  color:white;
+  padding: 8px 16px;
+  margin-bottom: 2px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+}
+
+.hide {
+  display: none;
+}
+
 h1 {
-  margin-left:10px;
-  font-weight: initial;
-  font-weight: normal;
-}
-h2 {
-  margin-left:10px;
-  font-weight: initial;
-  font-weight: normal;
-}
-h3 {
-  margin-left:10px;
+  margin-left: 10px;
   font-weight: initial;
   font-weight: normal;
 }
 
-p {
-    margin-left:10px;
+h2 {
+  margin-left: 10px;
+  font-weight: initial;
+  font-weight: normal;
 }
-pre {
-    margin-left:10px;
+
+h3 {
+  margin-left: 10px;
+  font-weight: initial;
+  font-weight: normal;
 }
-a{
-    margin-left:10px;
+
+.login {
+  width: -moz-available;
+  width: -webkit-fill-available;
+  margin: 8px 4px;
 }
+
+input {
+  padding: 8px 16px;
+  appearance: none;
+  background-color: black;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  box-sizing: border-box;
+}
+
+::placeholder {
+  color: #b8b8b8
+}
+
 .sidenav {
   height: 100%;
   /* Full-height: remove this if you want "auto" height */
@@ -87,43 +206,50 @@ button, select {
   -webkit-appearance: none;
   /* Safari and Chrome */
   appearance: none;
+  transition: all 0.3s;
 }
 
 .card {
-  background-color: #eeeeee;
+  background-color: #2c2c2c;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 16px 16px;
   padding-right: 16px;
   margin: 10px 10px;
+  transition: 0.5s;
 }
 
-.card > h2 {
+.card:hover {
+  background-color:#363636
+}
+
+.card>h2 {
   padding: 0 0;
-  margin-left: 4px;
-  margin-bottom:10px;
-  margin-top:0;
+  margin-left: 0;
+  margin-bottom: 10px;
+  margin-top: 0;
   font-size: 26px;
 }
 
-.card > p {
-    margin-left:4px;
+.card>p {
+  margin-left: 4px;
 }
-.card-header > h2 {
+
+.card-header>h2 {
   padding: 0 0;
   margin: 0 0;
-  margin-left:4px;
+  margin-left: 4px;
   margin-right: 0px;
   font-size: 26px;
 }
 
-.card-header > * {
-  display:inline-block;
+.card-header>* {
+  display: inline-block;
 }
 
 .card-header {
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
 }
@@ -134,6 +260,7 @@ select {
   background-size: 10px;
   background-repeat: no-repeat;
   outline: none;
+  font-size:16px;
 }
 
 label {
@@ -143,25 +270,26 @@ label {
 
 .aggiungi {
   font-family: 'Fira Sans', sans-serif;
+  font-size:16px;
   background-color: black;
   color: white;
   padding: 8px 16px;
   margin: 4px 4px;
   border: none;
   border-radius: 4px;
+  transition: all 0.3s;
 }
 
+
 .aggiungi:hover {
-  background-color: #141414;
+  background-color: #444444;
   cursor: pointer
 }
 
 button:hover {
-  background-color: #141414;
+  background-color: #444444;
   cursor: pointer
 }
-
-
 
 @media screen and (max-width: 720px) {
   .sidenav {
@@ -170,21 +298,23 @@ button:hover {
   }
   .sidenav a {
     font-size: 12px;
+    margin-left:2px;
+    padding-left:14px
   }
   .main {
     margin-left: 100px;
     font-size: 12px;
-    padding:2px
+    padding: 2px
   }
   .card {
     padding: 4px 8px;
     margin: 4px 4px;
   }
-  .card-header > h2 {
-      font-size:18px;
+  .card-header>h2 {
+    font-size: 18px;
   }
-  .card > * {
-      font-size:14px;
+  .card>* {
+    font-size: 14px;
   }
 }
 
@@ -194,10 +324,12 @@ a.start:link, a.start:visited {
   border: 2px solid green;
   border-radius: 4px;
   padding: 5px 10px;
-  margin-left:10px;
+  margin-left: 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  margin-top: 4px;
+  transition: 0.5s;
 }
 
 a.start:hover, a.start:active {
@@ -211,10 +343,11 @@ a.stop:link, a.stop:visited {
   border: 2px solid red;
   border-radius: 4px;
   padding: 5px 10px;
-  margin-left:10px;
+  margin-left: 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  transition: 0.5s;
 }
 
 a.stop:hover, a.stop:active {
@@ -228,43 +361,46 @@ a.stop:hover, a.stop:active {
   max-height: 100%;
 }
 
-@media screen and (prefers-color-scheme: dark) {
-  body {
-    background-color: #1e1e1e;
-    color: white;
-  }
-  .main {
-    background-color: #1e1e1e;
-    color: white;
-  }
-  a {
-    color: grey;
-  }
-  a:visited {
-    color: grey;
-  }
-  a:hover {
-    color: white;
-  }
-  a.start:link, a.start:visited {
-    background-color: #1e1e1e;
-    color: white;
-  }
-  a.start:hover, a.start:active {
-    background-color: green;
-    color: white;
-  }
-  a.stop:link, a.stop:visited {
-    background-color: #1e1e1e;
-    color: white;
-  }
-  a.stop:hover, a.stop:active {
-    background-color: red;
-    color: white;
-  }
-  .card {
-    background-color: #2c2c2c;
-  }
+body {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.main {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+a {
+  color: grey;
+}
+
+a:visited {
+  color: grey;
+}
+
+a:hover {
+  color: white;
+}
+
+a.start:link, a.start:visited {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+a.start:hover, a.start:active {
+  background-color: green;
+  color: white;
+}
+
+a.stop:link, a.stop:visited {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+a.stop:hover, a.stop:active {
+  background-color: red;
+  color: white;
 }
 
 .row {

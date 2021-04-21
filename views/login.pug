@@ -22,8 +22,8 @@ head
     form(action='/manager/login' method='POST')
       div
         label(for='name') Nome Utente
-        input(type='text' name='name' placeholder='Nome Utente')
+        input.login(type='text' name='name' placeholder='Nome Utente')
       div
         label(for='password') Password
-        input(type='password' name='password' placeholder='Password')
+        input.login(type='password' name='password' placeholder='Password')
       button(type='submit') Login
