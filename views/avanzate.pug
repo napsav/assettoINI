@@ -7,15 +7,6 @@ head
   link(rel='preconnect', href='https://fonts.gstatic.com')
   link(href='https://fonts.googleapis.com/css2?family=Fira+Sans&display=swap', rel='stylesheet')
   link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.15.1/css/all.css', integrity='sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp', crossorigin='anonymous')
-  style.
-    .container {
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    column-count: 2;
-    -webkit-column-gap: 20px;
-    -moz-column-gap: 20px;
-    column-gap: 20px;
-    }
 .sidenav
   img.logo(src='/assets/logo_transparent.png')
   a(href='/index.html') Home
@@ -32,7 +23,6 @@ head
       each elem, index in object
         h2= index
         each val, key in elem
-          label(for=name=`[${index}][${key}]`)=key
-          input(type="text" id=name=`[${index}][${key}]` name=`[${index}][${key}]` value=val)
-          | 
-          br
+          .input-avanzato
+            label(for=name=`[${index}][${key}]`)=key
+            input(type="text" id=name=`[${index}][${key}]` name=`[${index}][${key}]` value=val)

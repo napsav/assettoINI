@@ -133,6 +133,7 @@ h3 {
 
 input {
   padding: 8px 16px;
+  margin: 4px 4px;
   appearance: none;
   background-color: black;
   border-radius: 4px;
@@ -263,7 +264,24 @@ select {
   font-size:16px;
 }
 
+.input-avanzato {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-avanzato > input {
+  width: -moz-available;
+  width: -webkit-fill-available;
+}
+
+.container {
+columns: 2;
+}
+
 label {
+
   margin-right: 8px;
   margin-left: 4px;
 }
