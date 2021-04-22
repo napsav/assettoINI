@@ -7,8 +7,9 @@ window.onload = main
 
 async function main () {
   const data = await (await getMappe()).json()
-  const mappeDisponibili = Object.keys(data)
+  const mappeDisponibili = data.map(obj => obj.name)
   console.log(data)
+  console.log(mappeDisponibili)
   document.querySelectorAll('#mappaScelta').forEach(elem => {
     window.addEventListener('click', function (e) {
       if (!elem.contains(e.target)) {
@@ -18,21 +19,35 @@ async function main () {
   })
   const selectDiv = document.querySelectorAll('#mappaScelta')
   const searchInput = document.querySelectorAll('.search')
-  console.log(mappeDisponibili)
   document.querySelectorAll('.opzione-disabilitata').forEach(elem => { elem.remove() })
   selectDiv.forEach(elem => {
     elem.children[1].addEventListener('click', () => {
       elem.lastElementChild.classList.toggle('hide')
     })
-    for (const mappe of mappeDisponibili) {
+    for (const mappa of data) {
       const opzione = document.createElement('div')
       opzione.className = 'opzione'
-      opzione.setAttribute('data-primascelta', mappe)
-      opzione.textContent = mappe
+      opzione.setAttribute('data-primascelta', mappa.name)
+      const cover = document.createElement('img')
+      cover.className = 'cover-tracciato'
+      if(mappa.layouts !== null) {
+        opzione.textContent = mappa.layouts[0].data.name
+        cover.src = mappa.layouts[0].outline
+      } else {
+        opzione.textContent = mappa.data.name
+        cover.src = mappa.outline
+      }
+      opzione.append(cover)
+      
       opzione.addEventListener('click', () => {
         opzione.parentElement.parentElement.classList.toggle('hide')
         const child = opzione.parentElement.parentElement.previousElementSibling
-        child.textContent = opzione.dataset.primascelta
+        const oggettoScelto = data.find(obj=> obj.name === opzione.dataset.primascelta)
+        if (oggettoScelto.layouts !== null) {
+          child.textContent = oggettoScelto.layouts[0].data.name
+        } else {
+          child.textContent = oggettoScelto.data.name
+        }
         child.previousElementSibling.value = opzione.dataset.primascelta
         const event = new CustomEvent('change', {
           detail: {
@@ -59,9 +74,8 @@ async function main () {
 
   selectDiv[0].addEventListener('change', function (e) {
     const opzione = e.detail.primascelta
-    console.log(opzione)
     let layoutSelezione = document.getElementById('layoutScelto')
-    if (data[opzione] !== null) {
+    if (data.find(obj => obj.name === opzione).layouts !== null) {
       if (layoutSelezione === null) {
         layoutSelezione = selectDiv[0].cloneNode(true)
         layoutSelezione.id = 'layoutScelto'
@@ -72,11 +86,11 @@ async function main () {
           layoutSelezione.children[2].classList.toggle('hide')
         })
 
-        for (const layout of data[opzione]) {
+        for (const layout of data.find(obj => obj.name === opzione).layouts) {
           const opzione = document.createElement('div')
           opzione.className = 'opzione'
-          opzione.setAttribute('data-primascelta', layout)
-          opzione.textContent = layout
+          opzione.setAttribute('data-primascelta', layout.id)
+          opzione.textContent = layout.id
           opzione.addEventListener('click', () => {
             opzione.parentElement.parentElement.classList.toggle('hide')
             const child = opzione.parentElement.parentElement.previousElementSibling
@@ -95,22 +109,24 @@ async function main () {
         })
       } else {
         layoutSelezione.children[2].lastElementChild.innerHTML = ''
-        for (const layout of data[opzione]) {
+        for (const layout of data.find(obj => obj.name === opzione).layouts) {
           const opzione = document.createElement('div')
           opzione.className = 'opzione'
-          opzione.setAttribute('data-primascelta', layout)
-          opzione.textContent = layout
+          opzione.setAttribute('data-primascelta', layout.id)
+          opzione.textContent = layout.id
+
           opzione.addEventListener('click', () => {
             opzione.parentElement.parentElement.classList.toggle('hide')
             const child = opzione.parentElement.parentElement.previousElementSibling
+            
             child.textContent = opzione.dataset.primascelta
             child.previousElementSibling.value = opzione.dataset.primascelta
           })
-          layoutSelezione.append(opzione)
+          layoutSelezione.children[1].textContent = 'Seleziona il layout'
+          layoutSelezione.children[2].lastElementChild.append(opzione)
         }
       }
     } else {
-      console.log(layoutSelezione)
       if (layoutSelezione !== null) {
         layoutSelezione.remove()
       }

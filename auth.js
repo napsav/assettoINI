@@ -1,13 +1,15 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
-const express = require('express')
+import express from 'express'
 const router = express.Router()
-const User = require('./models/user.js')
-const bcrypt = require('bcrypt')
-const passport = require('passport')
-require('./config/passport')(passport)
+import { User } from './models/user.js'
+import bcrypt from 'bcrypt'
+import passport from 'passport'
+import { initializePassport } from './config/passport.js'
+initializePassport(passport)
 
-const { ensureAuthenticated } = require('./config/auth.js')
+import { ensureAuthenticated } from './config/auth.js'
 
 router.get('/manager/registrazione', (req, res) => {
   res.render('reg.pug')
@@ -87,4 +89,4 @@ router.get('/manager/errore', ensureAuthenticated, (req, res) => {
   res.render('asklogout.pug')
 })
 
-module.exports = router
+export { router as auth }

@@ -1,4 +1,4 @@
-function getSkins (dataObject, macchina) {
+function getSkins(dataObject, macchina) {
   const skins = dataObject[macchina]
   if (skins != null) {
     return skins
@@ -7,7 +7,7 @@ function getSkins (dataObject, macchina) {
   }
 }
 
-function parseINIString (data) {
+function parseINIString(data) {
   const regex = {
     section: /^\s*\[\s*([^\]]*)\s*\]\s*$/,
     param: /^\s*([^=]+?)\s*=\s*(.*?)\s*$/,
@@ -37,7 +37,7 @@ function parseINIString (data) {
   return value
 }
 
-function generaOggDaForm (dataObject, formObject) {
+function generaOggDaForm(dataObject, formObject) {
   const final = []
   const n = parseInt(formObject.numeroMacchineForm)
   const dataObjectKeys = Object.keys(dataObject)
@@ -70,7 +70,7 @@ function generaOggDaForm (dataObject, formObject) {
   }
 }
 
-function generaINI (macchine) {
+function generaINI(macchine) {
   let data = ''
   let i = 0
   for (const elem of macchine) {
@@ -84,20 +84,20 @@ function generaINI (macchine) {
   return data
 }
 
-function saveINI (oggetto) {
+function saveINI(oggetto) {
   let dataINI = ''
-  for ([key, value] of Object.entries(oggetto)) {
-    dataINI += '[' + key + ']\n'
-    for ([valore, prop] of Object.entries(oggetto[key])) {
-      dataINI += valore + '=' + prop + '\n'
-    }
+  for (const array of Object.entries(oggetto)) {
+      dataINI += '[' + array[0] + ']\n'
+      for(const opzione of Object.entries(array[1])) {
+          dataINI += opzione[0] + '=' + opzione[1] + '\n'
+      }
   }
   return dataINI
 }
 
-module.exports = {
-  parseINIString: parseINIString,
-  generaOggDaForm: generaOggDaForm,
-  generaINI: generaINI,
-  saveINI: saveINI
+export {
+  parseINIString,
+  generaOggDaForm,
+  generaINI,
+  saveINI
 }

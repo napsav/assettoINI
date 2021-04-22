@@ -1,19 +1,20 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
-const express = require('express')
-const fs = require('fs')
+import express from 'express'
+import fs from 'node:fs'
 const router = express.Router()
 
-const { ensureAuthenticated } = require('./config/auth.js')
-const { isAdmin } = require('./config/admin.js')
-const content = require('./content.js')
-const { parseINIString, generaINI, generaOggDaForm, saveINI } = require('./ini.js')
+import { ensureAuthenticated } from './config/auth.js'
+import { isAdmin } from './config/admin.js'
+import { macchineDisponibili } from './content.js'
+import { parseINIString, generaINI, generaOggDaForm, saveINI } from './ini.js'
 
 const serverStatusFile = process.env.STATUSFILE
 const serverCfg = process.env.SERVERCFG
 const entryList = process.env.ENTRYLIST
 
-function onlyUnique (value, index, self) {
+function onlyUnique(value, index, self) {
   return self.indexOf(value) === index
 }
 
@@ -40,7 +41,7 @@ router.post('/aggiungi', ensureAuthenticated, isAdmin, (req, res) => {
   if (fs.existsSync(serverStatusFile)) {
     res.render('errore.pug', { errore: 'Il server è ancora in esecuzione! Torna indietro e fermalo.' })
   } else {
-    const macchine = generaOggDaForm(content.macchineDisponibili(), req.body)
+    const macchine = generaOggDaForm(macchineDisponibili(), req.body)
     const serverdata = fs.readFileSync(serverCfg, 'utf8')
     const serverCfgObject = parseINIString(serverdata)
     if (macchine != null) {
@@ -55,7 +56,7 @@ router.post('/aggiungi', ensureAuthenticated, isAdmin, (req, res) => {
 })
 
 router.get('/disponibili', ensureAuthenticated, isAdmin, (req, res) => {
-  res.json(content.macchineDisponibili())
+  res.json(macchineDisponibili())
 })
 
 router.get('/reset', ensureAuthenticated, isAdmin, (req, res) => {
@@ -67,4 +68,4 @@ router.get('/reset', ensureAuthenticated, isAdmin, (req, res) => {
   }
 })
 
-module.exports = router
+export { router as macchine }

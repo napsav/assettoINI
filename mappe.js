@@ -1,14 +1,15 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
-const express = require('express')
-const fs = require('fs')
+import express from 'express'
+import fs from 'node:fs'
 const router = express.Router()
 
-const { ensureAuthenticated } = require('./config/auth.js')
-const { isAdmin } = require('./config/admin.js')
-const content = require('./content.js')
+import { ensureAuthenticated } from './config/auth.js'
+import { isAdmin } from './config/admin.js'
+import { mappeDisponibili } from './content.js'
 
-const { parseINIString, saveINI } = require('./ini.js')
+import { parseINIString, saveINI } from './ini.js'
 
 const serverStatusFile = process.env.STATUSFILE
 const serverCfg = process.env.SERVERCFG
@@ -32,28 +33,28 @@ router.get('/', ensureAuthenticated, isAdmin, (req, res) => {
 })
 
 router.get('/disponibili', ensureAuthenticated, isAdmin, (req, res) => {
-  res.json(content.mappeDisponibili())
+  res.json(mappeDisponibili())
 })
 
 router.post('/cambia', ensureAuthenticated, isAdmin, (req, res) => {
   if (fs.existsSync(serverStatusFile)) {
     res.render('errore.pug', { errore: 'Il server è ancora in esecuzione! Torna indietro e fermalo.' })
   } else {
-    const data = content.mappeDisponibili()
+    const data = mappeDisponibili()
     const serverdata = fs.readFileSync(serverCfg, 'utf8')
     const serverCfgObject = parseINIString(serverdata)
     const mappaProposta = req.body.mappaScelta
     const layoutProposta = req.body.layoutScelto
-    const mappe = Object.keys(data)
+    const mappe = data.map(obj => obj.name)
     if (mappe.includes(mappaProposta)) {
-      const layouts = data[mappaProposta]
+      const layouts = data.find(obj => obj.name === mappaProposta).layouts
       if (layouts !== undefined && layouts === null) {
         serverCfgObject.SERVER.TRACK = mappaProposta
         serverCfgObject.SERVER.CONFIG_TRACK = ''
       } else if (layouts.length > 0) {
         if (layoutProposta !== undefined) {
-          if (data[mappaProposta].includes(layoutProposta)) {
-            serverCfgObject.SERVER.CONFIG_TRACK = req.body.layoutScelto
+          if (layouts.find(obj => obj.id === layoutProposta) !== undefined) {
+            serverCfgObject.SERVER.CONFIG_TRACK = layoutProposta
             serverCfgObject.SERVER.TRACK = mappaProposta
           } else {
             res.render('errore.pug', { errore: 'Layout inesistente' })
@@ -67,10 +68,10 @@ router.post('/cambia', ensureAuthenticated, isAdmin, (req, res) => {
     } else {
       res.render('errore.pug', { errore: 'Mappa inesistente' })
     }
-
     fs.writeFileSync(serverCfg, saveINI(serverCfgObject))
     res.redirect('/manager/mappe')
+
   }
 })
 
-module.exports = router
+export { router as mappe }

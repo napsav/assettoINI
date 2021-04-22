@@ -1,26 +1,28 @@
 /* eslint-disable node/handle-callback-err */
-require('dotenv').config()
-const express = require('express')
+import dotenv from 'dotenv'
+dotenv.config()
+import express from 'express'
 const app = express()
-const fs = require('fs')
+import fs from 'node:fs'
 const port = 8080
-const { exec } = require('child_process')
+import { exec } from 'child_process'
+
 
 const serverStatusFile = process.env.STATUSFILE
 const serverCfg = process.env.SERVERCFG
 const entryList = process.env.ENTRYLIST
 
-const passport = require('passport')
-require('./config/passport')(passport)
+import passport from 'passport'
 
-const { ensureAuthenticated } = require('./config/auth.js')
-const { isAdmin } = require('./config/admin.js')
-const session = require('express-session')
-const flash = require('connect-flash')
-const macchine = require('./macchine.js')
-const mappe = require('./mappe.js')
-const auth = require('./auth.js')
-const { parseINIString, saveINI } = require('./ini.js')
+
+import { ensureAuthenticated } from './config/auth.js'
+import { isAdmin } from './config/admin.js'
+import session from 'express-session'
+import flash from 'connect-flash'
+import { macchine } from './macchine.js'
+import { mappe } from './mappe.js'
+import { auth } from './auth.js'
+import { parseINIString, saveINI } from './ini.js'
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
