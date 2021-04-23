@@ -122,9 +122,6 @@ function getTrackData(pathToScan, id) {
           }
           optimizedImages.push(imageObj)
           obj['outline'] = copiedOutlinePath.replace(imagesDirectory,'/immagini/')
-
-          optimizeImages(optimizedImages, ()=>{console.log('Immagini ottimizate con successo')})
-
         }
       }
 
