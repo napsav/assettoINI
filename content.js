@@ -1,4 +1,4 @@
-import { readdirSync, existsSync, readFileSync, writeFileSync } from 'fs'
+import { readdirSync, existsSync, readFileSync, writeFileSync, writeFile, mkdir } from 'fs'
 import path from 'node:path'
 import dotenv from 'dotenv'
 dotenv.config()
@@ -8,7 +8,35 @@ import crypto from 'node:crypto'
 import imagemin from 'imagemin'
 import imageminPngquant from 'imagemin-pngquant'
 
-const optimizedImages = {}
+let optimizedImages = []
+const optimizedImagesJsonDir = './instance/'
+
+function ensureExists(path, mask, cb) {
+  if (typeof mask == 'function') { // allow the `mask` parameter to be optional
+      cb = mask;
+      mask = 484;
+  }
+  mkdir(path, mask, function(err) {
+      if (err) {
+          if (err.code == 'EEXIST') cb(null); // ignore the error if the folder already exists
+          else cb(err); // something else went wrong
+      } else cb(null); // successfully created folder
+  });
+}
+
+function loadOptimizedImages() {
+  optimizedImages = JSON.parse(readFileSync(optimizedImagesJsonDir + 'optimizedImages.json'))
+}
+
+function saveOptimizedImages() {
+  if(Object.entries(optimizedImages).length > 0) {
+    console.log('Saving images json')
+    writeFile('./instance/optimizedImages.json', JSON.stringify(optimizedImages), {encoding:'utf8'}, () => {
+      console.log('Json scritto')
+    })
+    optimizeImages(optimizedImages, ()=>{console.log('Immagini ottimizate con successo')})
+  }
+}
 
 
 const getDirectories = source =>
@@ -32,18 +60,32 @@ function macchineDisponibili() {
   return final
 }
 
-/* async function optimizeImages(image) {
-  await imagemin(image, {
-    destination: imagesDirectory,
-    plugins: [
-      imageminPngquant()
-    ]
-  });
-  const newPath = process.env.IMMAGINI + crypto.randomBytes(3*4).toString('base64') + '.png'
-  renameSync(newPath, image)
-  console.log('Images optimized');
-  return newPath
-} */
+async function optimizeImages(oggetto, cb) {
+  console.log('Ottimizzo le immagini...')
+  const toBeOptimized = []
+  for (const obj of oggetto) {
+    if (!obj.optimized) {
+      toBeOptimized.push(obj.path)
+      
+    }
+  }
+  console.log(toBeOptimized)
+  if (toBeOptimized.length > 0) {
+    imagemin(toBeOptimized, {
+      destination: imagesDirectory,
+      plugins: [
+        imageminPngquant()
+      ]
+    }).then(()=>{
+      console.log('Ottimizzazione completata')
+      oggetto.filter((el)=>(!el.optimized)).forEach((obj)=>{obj.optimized = true})
+    });
+  } else {
+    console.log('Immagini già ottimizzate')
+  }
+
+  cb()
+}
 
 function getTrackData(pathToScan, id) {
   //const pathForLayout = baseDir + 'content/tracks/' + elem + '/ui/' + layoutElem
@@ -60,8 +102,12 @@ function getTrackData(pathToScan, id) {
       if (filesInDirectory.includes('outline.png')) {
         // obj['outline']
         outlinePath = pathToScan + '/outline.png'
-        if (Object.keys(optimizedImages).includes(outlinePath)) {
-          obj['outline'] = optimizedImages[outlinePath].replace(imagesDirectory,'/immagini/')
+        //Object.keys(optimizedImages).includes(outlinePath)
+        const imageObj = optimizedImages.find((obj)=>{
+          obj.originalPath === outlinePath
+        })
+        if (imageObj !== undefined) {
+          obj['outline'] = imageObj.path.replace(imagesDirectory,'/immagini/')
         } else {
           const data = readFileSync(outlinePath)
           const copiedOutlinePath = imagesDirectory + crypto.randomBytes(16).toString("hex") + '.png'
@@ -69,11 +115,15 @@ function getTrackData(pathToScan, id) {
           //TODO: Rendere la copia asincrona, chiamare la funzione per ottimizzare le immagini dell'array
 
           writeFileSync(copiedOutlinePath, data)
-
-          optimizedImages[outlinePath] = copiedOutlinePath
+          const imageObj = {
+            path: copiedOutlinePath,
+            originalPath: outlinePath,
+            optimized: false
+          }
+          optimizedImages.push(imageObj)
           obj['outline'] = copiedOutlinePath.replace(imagesDirectory,'/immagini/')
 
-          // TODO: Ottimizzazione separata
+          optimizeImages(optimizedImages, ()=>{console.log('Immagini ottimizate con successo')})
 
         }
       }
@@ -123,5 +173,8 @@ function mappeDisponibili() {
 
 export {
   macchineDisponibili,
-  mappeDisponibili
+  mappeDisponibili,
+  ensureExists,
+  loadOptimizedImages,
+  saveOptimizedImages,
 }

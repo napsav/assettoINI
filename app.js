@@ -1,4 +1,3 @@
-/* eslint-disable node/handle-callback-err */
 import dotenv from 'dotenv'
 dotenv.config()
 import express from 'express'
@@ -23,6 +22,8 @@ import { macchine } from './macchine.js'
 import { mappe } from './mappe.js'
 import { auth } from './auth.js'
 import { parseINIString, saveINI } from './ini.js'
+import { ensureExists, loadOptimizedImages, saveOptimizedImages } from './content.js'
+import { existsSync } from 'node:fs'
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
@@ -47,7 +48,17 @@ app.use(auth)
 
 app.disable('x-powered-by')
 
-// AUTENTICAZIONE
+const dir = './instance/'
+setInterval(saveOptimizedImages, 120000)
+ensureExists(dir, 484, function(err) {
+  if (err) {
+    console.log(err)
+  } else {
+    if(existsSync(dir + 'optimizedImages.json')) {
+      loadOptimizedImages()
+    }
+  }
+})
 
 app.get('/manager', ensureAuthenticated, isAdmin, (req, res) => {
   try {

@@ -8,3 +8,5 @@ assetto/
 generazione-macchine/
 testFrontend/
 public/immagini/
+instance/
+.eslintrc.json
