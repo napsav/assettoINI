@@ -17,6 +17,21 @@ async function main () {
       }
     })
   })
+  const immagine = document.createElement('img')
+  const elemento = document.getElementsByClassName('card')[0].children[1]
+  const mappaAttuale = elemento.textContent.replace("Tracciato: ","")
+  const mappaAttualeObj = data.find(obj=> obj.name === mappaAttuale)
+  immagine.className = 'cover-tracciato'
+  if (mappaAttualeObj.layouts !== null) {
+    immagine.src = mappaAttualeObj.layouts[0].outline
+    elemento.textContent = mappaAttualeObj.layouts[0].data.name
+  } else {
+    immagine.src = mappaAttualeObj.outline
+    elemento.textContent = mappaAttualeObj.data.name
+  }
+  
+   
+  document.getElementsByClassName('card')[0].appendChild(immagine)
   const selectDiv = document.querySelectorAll('#mappaScelta')
   const searchInput = document.querySelectorAll('.search')
   document.querySelectorAll('.opzione-disabilitata').forEach(elem => { elem.remove() })
