@@ -18,7 +18,7 @@ async function main () {
     })
   })
   const immagine = document.createElement('img')
-  const elemento = document.getElementsByClassName('card')[0].children[1]
+  const elemento = document.getElementsByClassName('card')[0].lastElementChild.children[0].firstElementChild
   const mappaAttuale = elemento.textContent.replace("Tracciato: ","")
   const mappaAttualeObj = data.find(obj=> obj.name === mappaAttuale)
   immagine.className = 'cover-tracciato'
@@ -30,8 +30,10 @@ async function main () {
     elemento.textContent = mappaAttualeObj.data.name
   }
   
-   
-  document.getElementsByClassName('card')[0].appendChild(immagine)
+  immagine.style = "width: 30%"
+  document.getElementsByClassName('card')[0].lastElementChild.appendChild(immagine)
+
+
   const selectDiv = document.querySelectorAll('#mappaScelta')
   const searchInput = document.querySelectorAll('.search')
   document.querySelectorAll('.opzione-disabilitata').forEach(elem => { elem.remove() })

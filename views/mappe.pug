@@ -23,8 +23,11 @@ head
         .card-header
           h2 Mappa attuale
           a(class="aggiungi" href="/manager/export") Esporta file
-        p Tracciato: #{mappa}
-        p Configurazione tracciato: #{configMappa}
+        .mappaCorrente
+          .descrizioneMappa
+            p Tracciato: #{mappa}
+            p Configurazione tracciato: #{configMappa}
+        
     #gestione.column
       .card
         .card-header
